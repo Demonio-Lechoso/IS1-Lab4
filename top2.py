@@ -11,7 +11,7 @@ from torch_geometric.datasets import Flickr
 
 import networkx as nx
 import matplotlib.pyplot as plt
-"""
+
 # Define the Graph Convolutional Network model
 class GCN(nn.Module):
     def __init__(self, num_features, hidden_dim, num_classes):
@@ -80,6 +80,8 @@ for epoch in range(200):
 avg_accuracy = sum(accuracies) / len(accuracies)
 print(f'Average Accuracy: {avg_accuracy:.4f}')
 
+
+
 # Define the Graph Convolutional Network model
 class GCN(nn.Module):
     def __init__(self, num_features, hidden_dim, num_classes):
@@ -90,14 +92,13 @@ class GCN(nn.Module):
     def forward(self, x, edge_index):
         x = self.conv1(x, edge_index)
         x = F.relu(x)
-        x = F.dropout(x, training=self.training)
         x = self.conv2(x, edge_index)
-        return F.log_softmax(x, dim=1)
+        return x
 
 # Load the dataset
-dataset = KarateClub()
+dataset = Planetoid(root='/tmp/CiteSeer', name='CiteSeer')
 
-# Split the dataset into training, validation, and test sets
+# Split the dataset into training set
 data = dataset[0]
 x, edge_index, y = data.x, data.edge_index, data.y
 train_mask = data.train_mask
@@ -105,6 +106,9 @@ train_mask = data.train_mask
 # Create the model and define the optimizer
 model = GCN(dataset.num_features, hidden_dim=16, num_classes=dataset.num_classes)
 optimizer = optim.Adam(model.parameters(), lr=0.01, weight_decay=5e-4)
+
+# Create the loss function
+criterion = nn.CrossEntropyLoss()
 
 # Convert edge_index to edge list format
 edges = edge_index.t().tolist()
@@ -124,7 +128,7 @@ def train():
     model.train()
     optimizer.zero_grad()
     output = model(x, edge_index)
-    loss = F.nll_loss(output[train_mask], y[train_mask])
+    loss = criterion(output[train_mask], y[train_mask])
     loss.backward()
     optimizer.step()
 
@@ -147,7 +151,9 @@ for epoch in range(200):
 # Calculate average accuracy
 avg_accuracy = sum(accuracies) / len(accuracies)
 print(f'Average Accuracy: {avg_accuracy:.4f}')
-"""
+
+
+
 # Define the Graph Convolutional Network model
 class GCN(nn.Module):
     def __init__(self, num_features, hidden_dim, num_classes):
@@ -163,13 +169,12 @@ class GCN(nn.Module):
         return F.log_softmax(x, dim=1)
 
 # Load the dataset
-dataset = Flickr(root="/tmp/Flickr")
+dataset = KarateClub()
 
-# Split the dataset into training set
+# Split the dataset into training, validation, and test sets
 data = dataset[0]
 x, edge_index, y = data.x, data.edge_index, data.y
 train_mask = data.train_mask
-
 
 # Create the model and define the optimizer
 model = GCN(dataset.num_features, hidden_dim=16, num_classes=dataset.num_classes)
