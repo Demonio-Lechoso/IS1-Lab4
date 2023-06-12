@@ -69,10 +69,16 @@ def evaluate():
     return acc
 
 # Train and evaluate the model
+accuracies = []
 for epoch in range(200):
     train()
     acc = evaluate()
+    accuracies.append(acc)
     print(f'Epoch: {epoch+1}, Accuracy: {acc:.4f}')
+
+# Calculate average accuracy
+avg_accuracy = sum(accuracies) / len(accuracies)
+print(f'Average Accuracy: {avg_accuracy:.4f}')
 
 # Define the Graph Convolutional Network model
 class GCN(nn.Module):
@@ -131,10 +137,16 @@ def evaluate():
     return acc
 
 # Train and evaluate the model
+accuracies = []
 for epoch in range(200):
     train()
     acc = evaluate()
+    accuracies.append(acc)
     print(f'Epoch: {epoch+1}, Accuracy: {acc:.4f}')
+
+# Calculate average accuracy
+avg_accuracy = sum(accuracies) / len(accuracies)
+print(f'Average Accuracy: {avg_accuracy:.4f}')
 """
 # Define the Graph Convolutional Network model
 class GCN(nn.Module):
@@ -194,7 +206,13 @@ def evaluate():
     return acc
 
 # Train and evaluate the model
+accuracies = []
 for epoch in range(200):
     train()
     acc = evaluate()
+    accuracies.append(acc)
     print(f'Epoch: {epoch+1}, Accuracy: {acc:.4f}')
+
+# Calculate average accuracy
+avg_accuracy = sum(accuracies) / len(accuracies)
+print(f'Average Accuracy: {avg_accuracy:.4f}')
