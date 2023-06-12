@@ -7,11 +7,11 @@ import torch.optim as optim
 from torch_geometric.nn import GCNConv
 from torch_geometric.datasets import Planetoid
 from torch_geometric.datasets import KarateClub
-from torch_geometric.datasets import Airports
+from torch_geometric.datasets import Flickr
 
 import networkx as nx
 import matplotlib.pyplot as plt
-
+"""
 # Define the Graph Convolutional Network model
 class GCN(nn.Module):
     def __init__(self, num_features, hidden_dim, num_classes):
@@ -135,7 +135,7 @@ for epoch in range(200):
     train()
     acc = evaluate()
     print(f'Epoch: {epoch+1}, Accuracy: {acc:.4f}')
-
+"""
 # Define the Graph Convolutional Network model
 class GCN(nn.Module):
     def __init__(self, num_features, hidden_dim, num_classes):
@@ -151,12 +151,13 @@ class GCN(nn.Module):
         return F.log_softmax(x, dim=1)
 
 # Load the dataset
-dataset = Planetoid(root='europe', name='europe')
+dataset = Flickr(root="/tmp/Flickr")
 
-# Split the dataset into training, validation, and test sets
+# Split the dataset into training set
 data = dataset[0]
 x, edge_index, y = data.x, data.edge_index, data.y
 train_mask = data.train_mask
+
 
 # Create the model and define the optimizer
 model = GCN(dataset.num_features, hidden_dim=16, num_classes=dataset.num_classes)
